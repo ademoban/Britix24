@@ -67,7 +67,7 @@ public class ActivityStreamStepDefinitions {
     @Then("user verifies new task has deadline")
     public void user_verifies_new_task_has_deadline() {
 
-     Assert.assertTrue(!pages.activityStreamManagment().deadlineDetail.getText().equals("None"));
+     Assert.assertTrue(!pages.activityStreamManagment().deadLineDetail().equals("None"));
 
 
     }
@@ -75,6 +75,6 @@ public class ActivityStreamStepDefinitions {
 
     @And("user select {string}")
     public void userSelect(String task) {
-        pages.activityStreamManagment().clickOnTask();
+        pages.activityStreamManagment().clickOnTask(task);
     }
 }

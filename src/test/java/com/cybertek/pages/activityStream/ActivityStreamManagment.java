@@ -5,6 +5,7 @@ import com.cybertek.utilities.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,6 +17,7 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class ActivityStreamManagment extends BasePage {
@@ -23,7 +25,7 @@ public class ActivityStreamManagment extends BasePage {
     public ActivityStreamManagment(){
         PageFactory.initElements(Driver.getDriver(),this);
     }
-    @FindBy(id = "feed-add-post-form-tab-tasks")
+    @FindBy(css = "#feed-add-post-form-tab-tasks")
     public WebElement tasklocator;
 @FindBy(xpath = "//input[@data-bx-id='task-edit-title']")
     public  WebElement thingsToDoLocator;
@@ -46,7 +48,7 @@ public WebElement uploadFile;
 @FindBy(xpath = "//span[@class='f-wrap']")
 public WebElement uploadedfile;
 
-@FindBy(xpath = "//a[@class='task-title task-status-text-color-accepted']")
+@FindBy(css = "[class^='task-title task-status-text-']")
 public List<WebElement> totalTaskLocator;
 @FindBy(xpath = "//input[@name='ID[]']")
 public WebElement totalCheckBoxLocator;
@@ -57,7 +59,7 @@ public List<WebElement> deadLineDates;
 @FindBy(xpath = "//span[@class='task-options-inp-container task-options-date']//input[@class='task-options-inp']")
 public WebElement selectDates;
 
-@FindBy(css = "[id='task-detail-deadline']")
+@FindBy(id = "task-detail-deadline")
 public WebElement deadlineDetail;
 
 public void clickSelectBtn(){
@@ -70,9 +72,14 @@ public void clickSelectBtn(){
 }
 
 public void clickOnTask(){
-    tasklocator.click();
-    BrowserUtils.waitFor(3);
-}
+   try{
+       BrowserUtils.waitFor(3);
+       tasklocator.click();
+       throw new NoSuchElementException("Element");
+}catch (Exception e) {
+       System.out.println("e.getMessage() = " + e.getMessage());
+   }
+   }
 public void writeIntoToDoList(String task){
 
     BrowserUtils.waitForClickablility(thingsToDoLocator,3);
@@ -101,12 +108,19 @@ public static List<String> getAllTasks(List<WebElement> elements){
 }
 public  void clickOnTask(String task){
 
-    List<String> list=new ArrayList<>();
-    for (WebElement each:totalTaskLocator
-    ) {if(each.getText().equals(task))
-        each.click();
-
+try {
+    List<WebElement> tasks = Driver.getDriver().findElements(By.cssSelector("[class^='task-title task-status-text-']"));
+    for (WebElement each : tasks
+    ) {
+        if (each.getText().equals(task)) {
+            BrowserUtils.waitForStaleElement(each);
+            each.click();
+        }
     }
+    throw new ElementClickInterceptedException("clicable");
+}catch (Exception e){
+    System.out.println("task = " + e.getMessage());
+}
     }
 
 
@@ -121,6 +135,17 @@ public String selectedDate(){
   String date=  selectDates.getText();
   return date;
 }
+public String deadLineDetail() {
+
+    WebElement frame=Driver.getDriver().findElement(By.xpath("//iframe[@class='side-panel-iframe']"));
+    Driver.getDriver().switchTo().frame(frame);
+
+    String info= Driver.getDriver().findElement(By.cssSelector("#task-detail-deadline")).getText();
+    Driver.getDriver().switchTo().defaultContent();
 
 
+    return info;
+
+
+}
 }
