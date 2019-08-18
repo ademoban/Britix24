@@ -5,6 +5,7 @@ import com.cybertek.utilities.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ActivityStreamManagment extends BasePage {
 
@@ -35,7 +37,7 @@ public class ActivityStreamManagment extends BasePage {
     public WebElement checklistLocator;
 @FindBy(xpath = "//span[@class='task-options-destination-wrap date']//input[@class='task-options-inp']")
     public WebElement deadlineLocator;
-@FindBy(id = "blog-submit-button-save")
+@FindBy(xpath = "//button[@id='blog-submit-button-save']")
 public WebElement sendButtonLocator;
 @FindBy(xpath = "//a[contains(text(),'First Task')]")
 public WebElement firstTaskLocator;
@@ -43,24 +45,43 @@ public WebElement firstTaskLocator;
 public WebElement uploadFile;
 @FindBy(xpath = "//span[@class='f-wrap']")
 public WebElement uploadedfile;
-@FindBy(xpath = "//table//tbody//tr[1]//td[3]")
-public WebElement taskTableLocater;
+
 @FindBy(xpath = "//a[@class='task-title task-status-text-color-accepted']")
 public List<WebElement> totalTaskLocator;
 @FindBy(xpath = "//input[@name='ID[]']")
 public WebElement totalCheckBoxLocator;
+@FindBy(xpath = "//span[@class='bx-calendar-button-text'][contains(text(),'Select')]")
+public WebElement selectBtn;
+@FindBy(css = "span[class='task-deadline-date']")
+public List<WebElement> deadLineDates;
+@FindBy(xpath = "//span[@class='task-options-inp-container task-options-date']//input[@class='task-options-inp']")
+public WebElement selectDates;
 
+@FindBy(css = "[id='task-detail-deadline']")
+public WebElement deadlineDetail;
+
+public void clickSelectBtn(){
+    try{
+        selectBtn.click();
+        throw  new ElementNotInteractableException("seleck button");
+    }catch (Exception e){
+        System.out.println("e.getMessage() = " + e.getMessage());
+    }
+}
 
 public void clickOnTask(){
     tasklocator.click();
+    BrowserUtils.waitFor(3);
 }
 public void writeIntoToDoList(String task){
 
     BrowserUtils.waitForClickablility(thingsToDoLocator,3);
     thingsToDoLocator.sendKeys(task);
+    BrowserUtils.waitFor(2);
 }
 public  void clickToSend(){
-   sendButtonLocator.click();
+    BrowserUtils.waitForStaleElement(sendButtonLocator);
+    sendButtonLocator.click();
 }
 public boolean verifyUserUploads(){
 
@@ -68,16 +89,7 @@ public boolean verifyUserUploads(){
     return uploadedfile.isEnabled();
 
 }
-public boolean verifyUserUploadsLink(){
-    return uploadLinkLocator.isEnabled();
-}
-public boolean verifyUserCanCreateCheckList(){
-    return checklistLocator.isEnabled();
-}
-public void verifydeadline(){
-    deadlineLocator.click();
 
-}
 public static List<String> getAllTasks(List<WebElement> elements){
     List<String> list=new ArrayList<>();
     for (WebElement each:elements
@@ -87,5 +99,28 @@ public static List<String> getAllTasks(List<WebElement> elements){
     }
     return list;
 }
+public  void clickOnTask(String task){
+
+    List<String> list=new ArrayList<>();
+    for (WebElement each:totalTaskLocator
+    ) {if(each.getText().equals(task))
+        each.click();
+
+    }
+    }
+
+
+public  void selectDeadline(int input){
+
+    Driver.getDriver().findElement(By.xpath("//a[@class='bx-calendar-cell'][contains(text(),'"+input+"')]")).click();
+  BrowserUtils.waitForStaleElement(selectBtn);
+    selectBtn.click();
+
+}
+public String selectedDate(){
+  String date=  selectDates.getText();
+  return date;
+}
+
 
 }

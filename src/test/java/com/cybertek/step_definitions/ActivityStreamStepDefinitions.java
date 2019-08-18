@@ -1,6 +1,7 @@
 package com.cybertek.step_definitions;
 
 import com.cybertek.utilities.Pages;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -27,6 +28,7 @@ public class ActivityStreamStepDefinitions {
 
     @Then("click on send")
     public void click_on_send() {
+
      pages.activityStreamManagment().clickToSend();
     }
 
@@ -43,6 +45,36 @@ public class ActivityStreamStepDefinitions {
 
     @When("click on task")
     public void clickOnTask() {
+        pages.activityStreamManagment().clickOnTask();
+    }
+
+    @Then("user click on deadline box")
+    public void user_click_on_deadline_box() {
+      pages.activityStreamManagment().deadlineLocator.click();
+
+    }
+
+    @And("user select {int}")
+    public void userSelect(int day) {
+        pages.activityStreamManagment().selectDeadline(day);
+    }
+
+    @Then("user click on select button")
+    public void user_click_on_select_button() {
+       pages.activityStreamManagment().clickSelectBtn();
+    }
+
+    @Then("user verifies new task has deadline")
+    public void user_verifies_new_task_has_deadline() {
+
+     Assert.assertTrue(!pages.activityStreamManagment().deadlineDetail.getText().equals("None"));
+
+
+    }
+
+
+    @And("user select {string}")
+    public void userSelect(String task) {
         pages.activityStreamManagment().clickOnTask();
     }
 }

@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
+        tags = {"@deadline"},
         features ={ "features"},
         glue = {"com\\cybertek\\step_definitions"},
         plugin = { "json:target\\cucumber.json",

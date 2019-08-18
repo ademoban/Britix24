@@ -11,6 +11,17 @@ public class ActivityStreamPage extends BasePage {
     Pages pages=new Pages();
 
 
+    @Test
+    public void test(){
+
+        pages.loginPage().goToLandingPage();
+        pages.loginPage().login("marketing");
+
+
+
+
+
+
     }
 
-
+}
