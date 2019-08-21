@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="activity Stream">
+    <test name="verification">
+        <classes>
+            <class name="com.cybertek.runners.CukesRunner"></class>
+        </classes>
+    </test>
+</suite>

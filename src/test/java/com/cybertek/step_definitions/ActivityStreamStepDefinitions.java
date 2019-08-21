@@ -1,5 +1,6 @@
 package com.cybertek.step_definitions;
 
+import com.cybertek.utilities.BrowserUtils;
 import com.cybertek.utilities.Driver;
 import com.cybertek.utilities.Pages;
 import cucumber.api.java.en.And;
@@ -89,7 +90,7 @@ pages.activityStreamManagment().uploadFile.click();
 
     @Then("verify image is available")
     public void verify_image_is_available() {
-     Assert.assertTrue(pages.activityStreamManagment().imigaLocator.isEnabled());
+   pages.activityStreamManagment().checkFile();
     }
 
     @And("user upload {string}file")

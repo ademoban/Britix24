@@ -64,7 +64,7 @@ public WebElement deadlineDetail;
 @FindBy(css = "#bx-b-uploadfile-task-form-lifefeed_task_form")
 public WebElement uploadFile;
 
-@FindBy(css = "[id^='disk-attach-image-']")
+@FindBy(xpath = "//img[@data-bx-viewer='image']")
 public WebElement imigaLocator;
 
 public void clickSelectBtn(){
@@ -158,6 +158,14 @@ public  void uploadFiles(String path){
 
     BrowserUtils.waitFor(3);
     attachFile.sendKeys(path);
+    BrowserUtils.waitFor(3);
+}
+
+public void checkFile(){
+    WebElement frame=Driver.getDriver().findElement(By.xpath("//iframe[@class='side-panel-iframe']"));
+    Driver.getDriver().switchTo().frame(frame);
+    Assert.assertTrue(imigaLocator.isDisplayed());
+    Driver.getDriver().switchTo().defaultContent();
 
 }
 }
