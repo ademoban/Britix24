@@ -79,4 +79,23 @@ public class ActivityStreamStepDefinitions {
     public void userSelect(String task) {
         pages.activityStreamManagment().clickOnTask(task);
     }
+
+    @Then("user click on upload {string} button")
+    public void user_click_on_upload_button(String string) {
+pages.activityStreamManagment().uploadFile.click();
+    }
+
+
+
+    @Then("verify image is available")
+    public void verify_image_is_available() {
+     Assert.assertTrue(pages.activityStreamManagment().imigaLocator.isEnabled());
+    }
+
+    @And("user upload {string}file")
+    public void userUploadFile(String path) {
+        pages.activityStreamManagment().uploadFiles(path);
+    }
 }
+
+

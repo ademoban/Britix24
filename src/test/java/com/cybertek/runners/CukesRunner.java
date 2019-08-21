@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        tags = {"@bitrix24"},
+        tags = {"@uploadFile"},
         features ={ "features"},
         glue = {"com\\cybertek\\step_definitions"},
         plugin = { "json:target\\cucumber.json",

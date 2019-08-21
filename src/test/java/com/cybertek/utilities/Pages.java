@@ -6,10 +6,10 @@ import com.cybertek.pages.activityStream.ActivityStreamPage;
 
 public class Pages {
 
-  private ActivityStreamPage activityStreamPage;
+
   private ActivityStreamManagment activityStreamManagment;
     private LoginPage loginPage;
-
+    private ActivityStreamPage activityStreamPage;
 
   public ActivityStreamPage activityStreamPage(){
       if(activityStreamPage==null)

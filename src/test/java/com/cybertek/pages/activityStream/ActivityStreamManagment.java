@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -44,9 +45,8 @@ public WebElement sendButtonLocator;
 @FindBy(xpath = "//a[contains(text(),'First Task')]")
 public WebElement firstTaskLocator;
 @FindBy(xpath = "//input[@name='bxu_files[]']")
-public WebElement uploadFile;
-@FindBy(xpath = "//span[@class='f-wrap']")
-public WebElement uploadedfile;
+public WebElement attachFile;
+
 
 @FindBy(css = "[class^='task-title task-status-text-']")
 public List<WebElement> totalTaskLocator;
@@ -61,6 +61,11 @@ public WebElement selectDates;
 
 @FindBy(id = "task-detail-deadline")
 public WebElement deadlineDetail;
+@FindBy(css = "#bx-b-uploadfile-task-form-lifefeed_task_form")
+public WebElement uploadFile;
+
+@FindBy(css = "[id^='disk-attach-image-']")
+public WebElement imigaLocator;
 
 public void clickSelectBtn(){
     try{
@@ -90,12 +95,7 @@ public  void clickToSend(){
     BrowserUtils.waitForStaleElement(sendButtonLocator);
     sendButtonLocator.click();
 }
-public boolean verifyUserUploads(){
 
-    uploadLinkLocator.sendKeys("\u202AC:\\Users\\ademo\\Desktop\\FirstTask.jpg");
-    return uploadedfile.isEnabled();
-
-}
 
 public static List<String> getAllTasks(List<WebElement> elements){
     List<String> list=new ArrayList<>();
@@ -117,7 +117,7 @@ try {
             each.click();
         }
     }
-    throw new ElementClickInterceptedException("clicable");
+    throw new ElementClickInterceptedException("clickable");
 }catch (Exception e){
     System.out.println("task = " + e.getMessage());
 }
@@ -146,6 +146,18 @@ public String deadLineDetail() {
 
     return info;
 
+
+}
+
+public  void uploadFiles(String path){
+    try {
+        FileInputStream inputFile=new FileInputStream(path);
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+
+    BrowserUtils.waitFor(3);
+    attachFile.sendKeys(path);
 
 }
 }
